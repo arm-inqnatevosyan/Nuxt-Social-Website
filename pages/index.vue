@@ -46,6 +46,9 @@
         <p v-if="errorPassword" class="text-red-500 font-bold">
           {{ errorPassword }}
         </p>
+        <p v-if="errorMessage" class="text-red-500 font-bold">
+          {{ errorMessage }}
+        </p>
         <div class="flex items-center justify-between mt-3">
           <button
             class="bg-blue-600 hover:bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -78,7 +81,8 @@ export default {
       email: '',
       password: '',
       errorEmail: null,
-      errorPassword: null
+      errorPassword: null,
+      errorMessage: null
     }
   },
   methods: {
@@ -102,6 +106,11 @@ export default {
           this.errorPassword = error.response.data.errors.password[0]
         } else {
           this.errorPassword = ''
+        }
+        if (error.response.data.errors[0]) {
+          this.errorMessage = error.response.data.errors
+        } else {
+          this.errorMessage = ''
         }
       }
     }
