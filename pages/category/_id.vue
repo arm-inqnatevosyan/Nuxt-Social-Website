@@ -18,14 +18,12 @@ import NavBars from '@/components/NavBars'
 
 export default {
   components: { NavBars },
-  middleware: ['auth'],
   data () {
     return {
       users: []
     }
   },
   async mounted () {
-    await this.$axios.get('/api/postman/csrf')
     const response = await this.$axios.get('/api/categories', { params: { id: this.$route.params.id } })
     this.users = response.data.data
   }

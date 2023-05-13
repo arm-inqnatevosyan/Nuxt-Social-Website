@@ -29,7 +29,6 @@ import NavBars from '../components/NavBars.vue'
 export default {
   name: 'AddPost',
   components: { NavBars },
-  middleware: ['auth'],
   data () {
     return {
       title: '',
@@ -39,7 +38,6 @@ export default {
   methods: {
     async submit (title) {
       try {
-        await this.$axios.get('/api/postman/csrf')
         const post = await this.$axios.post('/api/category', { title })
         if (post !== '') {
           this.$router.push('/')

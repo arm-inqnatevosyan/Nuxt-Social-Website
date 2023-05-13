@@ -90,7 +90,8 @@ import NavBars from '../components/NavBars.vue'
 export default {
   name: 'IndexPage',
   components: { NavBars },
-  middleware: ['login'],
+  middleware: ['guest'],
+  auth: false,
   data () {
     return {
       name: '',

@@ -33,7 +33,6 @@ export default {
     }
   },
   async mounted () {
-    await this.$axios.$get('/api/postman/csrf')
     const response = await this.$axios.get(`/api/contacts/${this.$route.params.id}`)
     const user = response.data
     this.users = user
@@ -41,7 +40,6 @@ export default {
   },
   methods: {
     async openUserProfile () {
-      await this.$axios.$get('/api/postman/csrf')
       await this.$router.push(`/api/contacts/${this.$route.params.id}`)
     }
   }

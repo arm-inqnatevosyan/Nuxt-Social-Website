@@ -20,7 +20,6 @@ import NavBars from '@/components/NavBars'
 import SeePost from '@/components/SeePost'
 export default {
   components: { NavBars, SeePost },
-  middleware: ['auth'],
   data () {
     return {
       users: [],
@@ -28,20 +27,17 @@ export default {
     }
   },
   async mounted () {
-    await this.$axios.get('/api/postman/csrf')
     const response = await this.$axios.get('/api/contacts')
     this.users = response.data.data
   },
   methods: {
     async openUserProfile (user) {
-      await this.$axios.get('/api/postman/csrf')
       await this.$router.push('/api/contacts' + '/' + `${user}`)
       if (user) {
         user = !user
       }
     },
     async addComment (id, title) {
-      await this.$axios.get('/api/postman/csrf')
       return await this.$axios.post('/api/contacts/comments', { contact_id: id, title })
     }
   }

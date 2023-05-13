@@ -24,7 +24,6 @@
 import NavBars from '@/components/NavBars'
 export default {
   components: { NavBars },
-  middleware: ['auth'],
   data () {
     return {
       categories: [],
@@ -32,14 +31,12 @@ export default {
     }
   },
   async mounted () {
-    await this.$axios.get('/api/postman/csrf')
     const response = await this.$axios.get('/api/categories')
     this.categories = response.data.data
   },
   methods: {
     async seeAll (id) {
-      await this.$axios.get('/api/postman/csrf')
-      this.$router.push(`/category/${id}`)
+      await this.$router.push(`/category/${id}`)
     }
   }
 }

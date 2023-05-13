@@ -30,8 +30,7 @@ export default {
     '@/assets/css/main.css'
   ],
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -46,6 +45,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
   env: {
@@ -54,11 +54,34 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:8000/',
-    proxy: true
+    baseURL: 'http://localhost:8000',
+    proxy: true,
+    withCredentials: true
   },
   proxy: {
     '/api': 'http://localhost:8000/'
+  },
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: 'http://localhost:8000',
+        endpoints: {
+          login: {
+            url: '/api/login'
+          }
+        }
+      }
+    },
+    redirect: {
+      register: '/register',
+      login: '/',
+      home: '/home',
+      callback: '/'
+    }
+  },
+  router: {
+    middleware: ['auth']
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

@@ -52,7 +52,6 @@ import NavBars from '@/components/NavBars'
 
 export default {
   components: { NavBars },
-  middleware: ['auth'],
   data () {
     return {
       users: [],
@@ -62,13 +61,11 @@ export default {
     }
   },
   async mounted () {
-    await this.$axios.$get('/api/postman/csrf')
     const response = await this.$axios.get('/api/contacts')
     this.users = response.data.data
   },
   methods: {
     async deleteData (id) {
-      await this.$axios.$get('/api/postman/csrf')
       const response = await this.$axios.delete(`/api/contacts/${id}/delete`)
       this.users.shift(response)
       if (response.message !== '') {
@@ -76,7 +73,6 @@ export default {
       }
     },
     async submit (id, email, name, description, category) {
-      await this.$axios.$get('/api/postman/csrf')
       const update = await this.$axios.put(`/api/contacts/${id}/update`, { id, email, name, description, category })
       this.users = update
       if (update !== '') {

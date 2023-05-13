@@ -68,7 +68,6 @@ import NavBars from '../components/NavBars.vue'
 export default {
   name: 'AddPost',
   components: { NavBars },
-  middleware: ['auth'],
   data () {
     return {
       name: '',
@@ -85,9 +84,8 @@ export default {
   },
   async mounted () {
     try {
-      await this.$axios.get('/api/postman/csrf')
       const category = await this.$axios.get('/api/category')
-      this.categories = category.data
+      this.categories = category.data.data
     } catch (error) {
       this.$cookiz.remove('token')
       return this.$router.push('/')
@@ -96,7 +94,6 @@ export default {
   methods: {
     async submit (name, email, description, id, category) {
       try {
-        await this.$axios.get('/api/postman/csrf')
         const post = await this.$axios.post('/api/contact', { name, email, description, user_id: id, category })
         if (post !== '') {
           this.$router.push('/users')
@@ -129,8 +126,8 @@ export default {
         }
       }
     },
-    logout () {
-      this.$cookiz.remove('token')
+    async logout () {
+      await this.$auth.logout()
       this.$router.push('/')
     }
   }

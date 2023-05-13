@@ -53,7 +53,7 @@
           <button
             class="bg-blue-600 hover:bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
-            @click="login(email,password)"
+            @click="login()"
           >
             Log In
           </button>
@@ -75,7 +75,7 @@ import NavBars from '../components/NavBars.vue'
 export default {
   name: 'LoginVue',
   components: { NavBars },
-  middleware: ['login'],
+  middleware: ['guest'],
   data () {
     return {
       email: '',
@@ -86,16 +86,15 @@ export default {
     }
   },
   methods: {
-    async login (email, password) {
+    async login () {
       try {
-        await this.$axios.$get('/api/postman/csrf')
-        const res = await this.$axios.$post('/api/login', { email, password })
-        if (res.status === true) {
-          this.$cookiz.set('token', res.token, {
-            maxAge: 60 * 60 * 24 * 7
-          })
-          this.$router.push('/createcategory')
-        }
+        await this.$auth.loginWith('laravelSanctum', {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        this.$router.push('/createcategory')
       } catch (error) {
         if (error.response.data.errors.email) {
           this.errorEmail = error.response.data.errors.email[0]
