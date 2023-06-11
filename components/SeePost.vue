@@ -83,9 +83,6 @@ export default {
         this.count += 1
       }
     }
-    // async getLikes (userId) {
-    //   await this.$axios.$get(`/api/likes/${userId}`, { contact_id: userId })
-    // }
   }
 }
 </script>
