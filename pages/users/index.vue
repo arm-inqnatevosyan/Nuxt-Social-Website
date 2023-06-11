@@ -6,10 +6,13 @@
         v-for="user in users"
         :id="user.id"
         :key="user.id"
+        :id1="user.id"
         :email="user.email"
+        :author="user.author"
         :name="user.name"
         :subject="user.subject"
         :comments="user.comments"
+        :likes="user.likes"
       />
     </div>
   </div>
@@ -18,17 +21,18 @@
 <script>
 import NavBars from '@/components/NavBars'
 import SeePost from '@/components/SeePost'
+
 export default {
   components: { NavBars, SeePost },
   data () {
     return {
       users: [],
-      content: ''
+      content: '',
+      liked: false
     }
   },
   async mounted () {
-    const response = await this.$axios.get('/api/contacts')
-    this.users = response.data.data
+    await this.getContacts()
   },
   methods: {
     async openUserProfile (user) {
@@ -39,6 +43,10 @@ export default {
     },
     async addComment (id, title) {
       return await this.$axios.post('/api/contacts/comments', { contact_id: id, title })
+    },
+    async getContacts () {
+      const response = await this.$axios.get('/api/contacts')
+      this.users = response.data.data
     }
   }
 }
